@@ -1,0 +1,494 @@
+**********************************************************************
+*
+* README for sec-hash--an implementation of the secure hash
+*        algorithm (SHA1).
+*
+* Last Updated: December 2010
+*
+* AUTHOR  Jason S. Jones <jsjones96@gmail.com>
+*
+* This project started as an academic exercise--basically, I
+* wanted to find an intermediate (practical) programming
+* challenge in order to explore some more advance aspects of c.
+* 
+**********************************************************************
+*
+*     DIR STRUCTURE
+*
+*
+**********************************************************************
+*
+*     BUILD and INSTALL 
+*
+*
+**********************************************************************
+*
+* File Descriptions:
+*
+* (For complete program descriptions, see the program source files)
+**********************************************************************
+* README        - this file!
+* makefile      - Makefile for all files
+**********************************************************************
+* Tutorial Samples (program files demonstrating basic database operations).
+*
+* tut_mod.sqc   - How to modify tables.
+* tut_read.sqc  - How to read tables.
+* tut_use.sqc   - How to use a database.
+*********************************************************************
+* Client Level (program files that deal with the client level of DB2)
+*
+* cli_info.c    - How to get and set client level information.
+* clisnap.c     - How to get a snapshot at the client level.
+********************************************************************
+* Instance Level (program files that deal with the instance level of DB2)
+*
+* inattach.c    - How to attach to and detach from an instance.
+* inauth.sqc    - How to display authorities at instance level.
+* ininfo.c      - How to get and set instance level information.
+* insnap.c      - How to get a snapshot at instance level.
+* instart.c     - How to stop and start the current local instance.
+*******************************************************************
+
+COPYING/LICENSE
+
+BUGS
+
+ To build the program, compile with:
+
+ 
+        make
+ 
+ To build the program in debug mode with will provide a very 
+ verbose output, compile with:
+ 
+        make test
+ 
+ Included in the tarball are two example files, one.txt and 
+ two.txt.  These files represent the two examples that are used
+ as part of the specification.  To see the verbose output that
+ matches the example, compile with:
+ 
+        make test
+ 
+ Then run:
+ 
+       ./sechash-gdb one.txt   OR    ./sechash-gdb two.txt
+ 
+ If sha1sum is installed on your system, running the two
+ side by side to compare outputs is also very useful.  To
+ verify outputs (to stdout), simply run:
+ 
+     ./sechash filename ; sha1sum filename
+ 
+ (of course, substitute 'filename' with the name of the file
+ you would like to use to compare digests)
+
+
+
+*****************************************************************************
+*
+* README for C Samples on Linux
+*
+* Last update: November 2003
+*
+* These sample programs are for the "C" programming language, and can be
+* found in the "sqllib/samples/c" directory of the database instance. Copy
+* these files to a working directory prior to building the sample programs.
+*
+* WARNING: Some of these samples may change your database or database manager
+*          configuration. Execute the samples against a 'test' database only,
+*          such as the DB2 SAMPLE database.
+*
+*****************************************************************************
+*     QUICKSTART
+*
+*  1) Copy /sqllib/samples/c/* to a working directory
+*  2) Modify the makefile to reflect your environment:
+*       o set ALIAS (database name as cataloged: default is "sample")
+*       o set UID (user ID to access the database)
+*       o set PWD (password to access the database)
+*       o set ALIAS2 (second database name cataloged: default is "sample2")
+*       o set UID2 (user ID to access the second database)
+*       o set PWD2 (password to access the second database)
+*
+*  3) Excute 'nmake all' from the working directory, or 'nmake all_client'
+*      if you are working on a remote client machine.
+*
+*****************************************************************************
+*
+* For information on developing C applications, see the Application
+* Development Guide.
+*
+* For information on using SQL statements, see the SQL Reference.
+*
+* For more information on DB2 APIs, see the Administrative API Reference.
+*
+* For the latest information on programming, compiling, and running DB2
+* applications, visit the DB2 application development website:
+*     http://www.software.ibm.com/data/db2/udb/ad
+*****************************************************************************
+*               Samples Design
+*
+* The C sample programs form an object-based design reflecting the
+* component nature of DB2. Related samples demonstrate a specific level of
+* database programming. Each level is identified by the first two characters
+* of the sample name. Here are the levels:
+*
+* Identifier     DB2 Level
+*
+*     cl        Client Level.
+*     in        Instance Level.
+*     db        Database Level.
+*     tb        Table Level.
+*     ts        Tablespace Level.
+*     dt        Data Type Level.
+*
+*****************************************************************************
+*               Other Samples
+*
+* Besides the samples organized in the DB2 Level design, other samples show
+* specific kinds of application methods:
+*
+* Identifier     Application Method
+*
+*     fn        SQL functions.
+*     sp        Stored Procedures.
+*     ud        User Defined Functions.
+*
+* In addition, there are tutorial samples that demonstrate basic
+* database operations. These programs begin with "tut_".
+*****************************************************************************
+*
+* File Descriptions:
+*
+* (For complete program descriptions, see the program source files)
+*****************************************************************************
+* README        - this file!
+* makefile      - Makefile for all files
+*****************************************************************************
+* Tutorial Samples (program files demonstrating basic database operations).
+*
+* tut_mod.sqc   - How to modify tables.
+* tut_read.sqc  - How to read tables.
+* tut_use.sqc   - How to use a database.
+*****************************************************************************
+* Client Level (program files that deal with the client level of DB2)
+*
+* cli_info.c    - How to get and set client level information.
+* clisnap.c     - How to get a snapshot at the client level.
+*****************************************************************************
+* Instance Level (program files that deal with the instance level of DB2)
+*
+* inattach.c    - How to attach to and detach from an instance.
+* inauth.sqc    - How to display authorities at instance level.
+* ininfo.c      - How to get and set instance level information.
+* insnap.c      - How to get a snapshot at instance level.
+* instart.c     - How to stop and start the current local instance.
+*****************************************************************************
+* Database Level (program files that deal with database objects in DB2)
+*
+* dbauth.sqc    - How to grant/display/revoke authorities at database level.
+* dbcfg.sqc     - How to configure database and database manager parameters.
+* dbconn.sqc    - How to connect and disconnect from a database.
+* dbcreate.c    - How to create and drop databases.
+* dbhistfile.sqc - How to read and update a database recovery file entry.
+* dbinfo.c      - How to get and set information at a database level.
+* dbinline.sqc  - How to use inline SQL Procedure Language
+* dbinspec.sqc  - How to check architectural integrity with the
+*                 DB2 API db2Inspect
+* dblogconn.sqc - How to read database log files asynchronously
+*                 with a database connection
+* dblognoconn.sqc - How to read database log files asynchronously
+*                   with no database connection
+* dbmcon.sqc    - How to connect and disconnect from multiple databases.
+* dbmcon1.h     - Header file for dbmcon1.sqc
+* dbmcon1.sqc   - Functions used in the multiple databases program dbmcon.
+* dbmcon2.h     - Header file for dbmcon2.sqc
+* dbmcon2.sqc   - Functions used in the multiple databases program dbmcon.
+* dbmigrat.c    - How to migrate a database.
+* dbpkg.sqc     - How to work with packages.
+* dbredirect.sqc - How to perform Redirected Restore of a database.
+* dbrestore.sqc - How to restore a database from a backup.
+* dbrollfwd.sqc - How to perform rollforward after restore of a database.
+* dbsample.sqc  - How to creates a sample database.
+* dbsnap.c      - How to get a snapshot at database level.
+* dbstat.c      - Provide database statistics about DB2 performance.
+* dbthrds.sqc   - How to use threads.
+* dbuse.sqc     - How to use database objects.
+*****************************************************************************
+* Table Level (program files that deal with table objects in DB2)
+*
+* tbast.sqc     - How to use staging table for updating deferred AST.
+* tbconstr.sqc  - How to work with table constraints.
+* tbselcreate.db2 - CLP script to create tables
+* tbseldrop.db2 - CLP script to drop tables
+* tbselinit     - Script that first calls tbseldrop.db2 and then calls
+*                 tbselcreate.db2.
+* tbcreate.sqc  - How to create, alter, and drop tables.
+* tbident.sqc   - How to use identity columns.
+* tbinfo.sqc    - How to get and set information at a table level.
+* tbintrig.sqc  - How to use INSTEAD OF triggers.
+* tbload.sqc    - How to load into a partitioned database.
+* tbmerge.sqc   - How to use the MERGE statement.
+* tbmod.sqc     - How to modify information in a table.
+* tbmove.sqc    - How to move a table.
+* tbonlineinx.sqc - How to create and reorg indexes on a table.
+* tbpriv.sqc    - How to grant/display/revoke privileges at a table level.
+* tbread.sqc    - How to read information in a table.
+* tbreorg.sqc   - How to reorganize a table.
+* tbsavept.sqc  - How to use external savepoints
+* tbsel.sqc     - How to select from each of: insert, update, delete.
+* tbtemp.sqc    - How to use a declared temporary table
+* tbtrig.sqc    - How to use a trigger on a table.
+* tbunion.sqc   - How to insert through a UNION ALL view
+* tbxload.sqc   - How to load data returned from a SELECT statement into
+*                 a table
+*****************************************************************************
+* Tablespace Level (program files that deal with tablespace objects in DB2)
+*
+* tscreate.sqc  - How to create/drop bufferpools and tablespaces.
+* tsinfo.sqc    - How to get information at tablespace level.
+*****************************************************************************
+* Data Type Level (programs that deal with data types)
+*
+* dtformat.sqc	- How to load and import data format extensions.
+* dtlob.sqc	- How to read and write LOB data.
+* dtudt.sqc	- How to create/use/drop user defined distinct types.
+*****************************************************************************
+* Function Level (program files that demonstrate SQL functions)
+*
+* fnuse.sqc     - How to use SQL functions.
+*****************************************************************************
+* Stored Procedure Level (program files that demonstrate stored procedures)
+*
+* spcreate.db2	- CLP script to issue CREATE PROCEDURE statements
+* spdrop.db2	- CLP script to drop stored procedures from the catalog
+* spcat         - CLP script that first calls spdrop.db2 and then calls
+*                 spcreate.db2.
+* spclient.sqc	- Client application that calls the stored procedures in
+*                 spserver.sqc.
+* spserver.sqc	- Stored procedure functions built and run on the server
+* spserver.exp  - export file for spserver.
+*****************************************************************************
+* UDF Level (program files that demonstrate user defined functions)
+*
+* udfcli.sqc	- Client application which calls the user defined function
+*                 in udfsrv.c.
+* udfemcli.sqc	- Call a variety of types of embedded SQL user-defined
+*                 functions in udfemsrv.sqc.
+* udfemsrv.sqc	- Embedded SQL user-defined functions called by udfemcli.sqc.
+* udfemsrv.exp  - Export file for udfemsrv.
+* udfsrv.c	- User defined function ScalarUDF called by udfcli.sqc.
+* udfsrv.exp	- Export file for udfsrv.
+*****************************************************************************
+* Log Management User Exit samples
+*
+* db2uext2.cdisk - uses the platform system copy command to archive and
+*                  retrieve database log files.
+* db2uext2.ctape - uses system tape commands to archive and retrieve
+*                  database log files.
+* db2uext2.ctsm  - uses Tivoli Storage Manager (TSM) APIs to archive and
+*                  retrieve database log files.
+* db2uext2.cxbsa - uses XBSA APIs to archive and retrieve database log
+*                  files.
+*****************************************************************************
+* Event Monitor samples
+*
+* evm.sqc - demonstrates file, pipe, and table event monitors
+*****************************************************************************
+* Common Utility Function files
+*
+* utilapi.c 	- Error-checking utility file for DB2 API programs.
+* utilapi.h	- Header file for utilapi.c.
+* utilemb.sqc	- Error-checking utility file for embedded SQL programs.
+* utilemb.h	- Header file for utilemb.sqc.
+* utilsnap.c	- Utility file for snapshot monitor programs: apsnap, dbsnap,
+*                 insnap.
+*****************************************************************************
+* Shell Scripts
+*
+* bldapp	- Builds an application program.
+* bldmc		- Builds a multi-connection application program.
+* bldmt		- Builds a multi-threaded program.
+* bldrtn	- Builds a routine (stored procedure and UDF) program.
+* embprep	- Precompiles and binds embedded SQL programs.
+*****************************************************************************
+
+
+
+
+*****************************************************************************
+*
+* README for CLI Samples on Linux
+*
+* Last update: April 2004
+*
+* These sample programs are for the "C" programming language, and can be
+* found in the "sqllib/samples/cli" directory of the database instance.  Copy
+* these files to your working directory prior to building the sample programs.
+*
+* WARNING: Some of these samples may change your database or database manager
+*          configuration.  Execute the samples against a 'test' database only,
+*          such as the DB2 SAMPLE database.
+*
+*****************************************************************************
+*               QUICKSTART
+*
+*  1) Copy /sqllib/samples/cli/* to a working directory.
+*  2) Modify the makefile to reflect your environment:
+*       o set ALIAS (database name as cataloged: default is "sample")
+*       o set UID (user ID to access the database)
+*       o set PWD (password to access the database)
+*       o set ALIAS2 (second database name as cataloged: default is "sample2")
+*       o set UID2 (user ID to access the second database)
+*       o set PWD2 (password to access the second database)
+*   3) Execute 'make all' from the working directory, or 'make all_client'
+*      if you are working on a remote client machine.
+*
+*****************************************************************************
+*
+* For information on developing CLI applications, see the CLI Guide
+* and Reference.
+*
+* For information on using SQL statements, see the SQL Reference.
+*
+* For the latest information on programming, building, and running DB2
+* applications, visit the DB2 application development website:
+*     http://www.software.ibm.com/data/db2/udb/ad
+*****************************************************************************
+*               Samples Design
+*
+* Most of the CLI sample programs are organized to reflect an object-based
+* design of the distinct levels of DB2. The level to which a sample belongs
+* is indicated by a two character identifier at the beginning of the sample
+* name. These levels show a hierarchical structure. The Installation image
+* level is the top level of DB2. Below this level, an application can access
+* different instances, an instance can have different databases, etc. Here
+* are the DB2 levels demonstated by the CLI samples:
+*
+* Identifier     DB2 Level
+*
+*     il        Installation Image Level.
+*     cl        Client Level.
+*     in        Instance Level.
+*     db        Database Level.
+*     tb        Table Level.
+*     dt        Data Type Level.
+*
+*****************************************************************************
+*               Other Samples
+*
+* Besides the samples organized in the DB2 Level design, other samples show
+* specific kinds of application methods:
+*
+* Identifier     Application Method
+*
+*     sp        Stored Procedures.
+*     ud        User Defined Functions.
+*
+* In addition, there are tutorial samples that demonstrate
+* basic database operations. These programs begin with "tut_".
+*****************************************************************************
+*
+* File Descriptions:
+*
+* (For complete program descriptions, see the program source files)
+*****************************************************************************
+* README        - this file!
+* makefile      - Makefile for all files
+*****************************************************************************
+* Tutorial Samples (program files that demonstrate basic database operations)
+*
+* tut_mod.c   - How to modify tables
+* tut_read.c  - How to read tables
+* tut_use.c   - How to use a database
+*****************************************************************************
+* Installation Image Level (programs that deal with the installation image
+*                          level of DB2)
+*
+* ilinfo.c      - How to get and set installation level information
+*****************************************************************************
+* Client Level (program files that deal with the client level of DB2)
+*
+* cli_info.c    - How to get and set client level information
+* clihandl.c    - How to allocate and free handles
+* clisqlca.c    - How to work with SQLCA data
+*****************************************************************************
+* Instance Level (program files that deal with the instance level of DB2)
+*
+* ininfo.c      - How to get and set instance level information
+*****************************************************************************
+* Database Level (program files that deal with database objects in DB2)
+*
+* dbcongui.c    - How to connect to a database with a graphical user
+*                 interface (GUI)
+* dbconn.c      - How to connect and disconnect from a database
+* dbinfo.c      - How to get and set information at a database level
+* dbmcon.c      - How to connect and disconnect from multiple databases
+* dbmconx.c     - How to connect and disconnect from multiple databases
+*                 with embedded SQL
+* dbmconx1.h    - header file for dbmconx1.sqc
+* dbmconx1.sqc  - embedded SQL file for the dbmconx program
+* dbmconx2.h    - header file for dbmconx2.sqc
+* dbmconx2.sqc  - embedded SQL file for the dbmconx program
+* dbnative.c    - How to translate a statement that contains an ODBC escape
+*                 clause to a data source specific format
+* dbuse.c       - How to use database objects
+* dbusemx.sqc   - How to use database objects with embedded SQL
+* dbxamon.c     - Show and roll back indoubt transactions
+*****************************************************************************
+* Table Level (program files that deal with table objects in DB2)
+*
+* tbast.c       - How to use staging table for updating deferred AST
+* tbcompress.c  - How to create tables with null and default value
+                  compression option
+* tbconstr.c    - How to work with table constraints
+* tbcreate.c    - How to create and drop tables
+* tbinfo.c      - How to get and set information at a table level
+* tbload.c      - How to insert data using the CLI LOAD utility
+* tbmod.c       - How to modify information in a table
+* tbonlineinx.c - How to create and reorg indexes on a table
+* tbread.c      - How to read information in a table
+* tbrunstats.c  - How to perform runstats on a table
+* tbtemp.c      - How to use a declared temporary table
+* tbumqt.c      - How to use user materialzed query tables (summary tables)
+*****************************************************************************
+* Data Type Level (programs that deal with data types)
+*
+* dtinfo.c      - How to get information about data types
+* dtlob.c       - How to read and write LOB data
+* dtudt.c       - How to create/use/drop user defined distinct types
+*****************************************************************************
+* Stored Procedures (program files that demonstrate stored procedures)
+*
+* spcreate.db2  - CLP script to issue CREATE PROCEDURE statements
+* spdrop.db2    - CLP script to drop stored procedures from the catalog
+* spcat         - CLP script that first calls spdrop.db2 and then calls
+*                 spcreate.db2
+* spclient.c    - Client application to call stored procedures in spserver
+* spclires.c    - Client application that demonstrates the difference between
+*                 SQLMoreResults and SQLNextResult for multiple result sets
+* spserver.c    - Stored procedure functions built and run on the server
+* spserver.exp  - Export file for spserver
+* spcall.c      - client program for calling stored procedures
+*****************************************************************************
+* UDFs (program files that demonstrate user defined functions)
+*
+* udfcli.c	- Client application which calls the user defined function
+*                 in udfsrv
+* udfsrv.c	- User defined function ScalarUDF called by udfcli.c sample
+* udfsrv.exp    - Export file for udfsrv
+*****************************************************************************
+* Common Utility Function files
+*
+* utilcli.c 	- Error-checking utility file for CLI programs
+* utilcli.h	- Header file for utilcli.c
+*****************************************************************************
+* Batch files
+*
+* bldapp    	- Builds application programs
+* bldmc         - Builds multi-connection application programs
+* bldrtn        - Builds routines (stored procedures and UDFs)
+* embprep       - Precompiles and binds embedded SQL programs
+*****************************************************************************
