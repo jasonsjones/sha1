@@ -7,29 +7,69 @@
 *
 * AUTHOR  Jason S. Jones <jsjones96@gmail.com>
 *
-* This project started as an academic exercise--basically, I
-* wanted to find an intermediate (practical) programming
-* challenge in order to explore some more advance aspects of c.
+*       This project started as an academic exercise.  Basically, I
+*       wanted to find an intermediate (practical) programming
+*       challenge in order to explore the more advanced aspects of c.
 * 
 **********************************************************************
+*  FILE DESCRIPTIONS:
 *
-*     DIR STRUCTURE
+* (For complete program description, see the program source file)
 *
-*
-**********************************************************************
-*
-*     BUILD and INSTALL 
-*
-*
-**********************************************************************
-*
-* File Descriptions:
-*
-* (For complete program descriptions, see the program source files)
-**********************************************************************
 * README        - this file!
-* makefile      - Makefile for all files
+* makefile      - Makefile to build project
+*
 **********************************************************************
+*  DIR STRUCTURE
+*
+*     sec-hash/
+*           |
+*           --doc/
+*           |
+*           --include/
+*           |
+*           --lib/
+*           |
+*           --obj/
+*           |
+*           --src/
+*           |
+*           --tests/
+*
+* TODO:  describe the purpose for each directory
+*
+**********************************************************************
+*
+*  BUILD and INSTALL 
+*
+* To build the basic executable (without verbose output enabled):
+*
+*    :$ make 
+*
+*    - Without modification to the makefile, this will produce an
+*      executable named 'sechash'.
+*
+* To build the executable with verbose output enabled:
+*
+*    :$ make test
+*
+*    - Without modification to the makefile, this will produce an
+*      executable named 'sechash-gdb'.
+*
+*    - Running this program will produce a verbose ouput which
+*      prints the components of the hash algorithm for each round.
+*      This is good to see how things are working and to verify
+*      the output against the examples listed in the appendix
+*      of the specification.
+*
+**********************************************************************
+*
+*  COPYING/LICENSE
+*
+**********************************************************************
+
+
+
 * Tutorial Samples (program files demonstrating basic database operations).
 *
 * tut_mod.sqc   - How to modify tables.
@@ -49,10 +89,6 @@
 * insnap.c      - How to get a snapshot at instance level.
 * instart.c     - How to stop and start the current local instance.
 *******************************************************************
-
-COPYING/LICENSE
-
-BUGS
 
  To build the program, compile with:
 
