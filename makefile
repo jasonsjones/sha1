@@ -3,9 +3,18 @@
 #     Filename: makefile
 #  Description:
 #
-#        Usage: make              (generate executable                      )
-#               make clean        (remove objects, executable, prerequisits )
-#               make tarball      (generate compressed archive              )
+#        Usage: make            -- generate executable
+#               make test       --
+#               make tags       -- generate tags file
+#               make install    --
+#               make uninstall  --
+#               make run-test   --
+#               make clean      -- remove objects, executable,
+#                                  prerequisits
+#               make clean-test -- same as clean, changes exec name
+#               make print
+#               make tarball    -- generate compressed archive
+#               make zip        -- generate compressed archive
 #
 #      Version:
 #      Created: 
@@ -28,6 +37,7 @@ TARGET = sechash
 BUILD_DIR = build
 SRC_DIR   = src
 OBJ_DIR   = obj
+
 # ==============================================================
 INSTALL_DIR  = $(HOME)/bin
 INCL         = include
@@ -38,6 +48,7 @@ LIB          = util
 CC         = gcc
 CFLAGS     = -O2 -Wall -std=c99 -pedantic -I$(INCL) -I$(INCL_LIB_HDR)
 DEBUGFLAGS = -ggdb -DDEBUG
+
 # ==============================================================
 SRC  = $(wildcard $(SRC_DIR)/*.c)
 OBJ  = $(addprefix $(OBJ_DIR)/, $(notdir $(SRC:%.c=%.o)))
@@ -45,6 +56,7 @@ EXEC = $(TARGET)
 
 LDFLAGS = -L$(LIB_DIR) -l$(LIB)
 CFLAGS += $(LDFLAGS)
+
 # ==============================================================
 
 
@@ -91,7 +103,7 @@ run-test:
 	tests/sha_test.sh
 
 
-# ------------ tarball generation ----------------------------------------------
+# ------------ tarball generation ---------------
 tarball:
 	@lokaldir=`pwd`; lokaldir=$${lokaldir##*/}; \
     rm --force $$lokaldir.tar.gz;               \
@@ -100,4 +112,9 @@ tarball:
         --gzip                                  \
         --verbose                               \
         --file  $$lokaldir.tar.gz *
+
+# ------------ zip --------------------
+zip:
+	@lokaldir=`pwd`; lokaldir=$${lokaldir##*/}; \
+	zip -r  $$lokaldir.zip * -x $(ZIP_EXCLUDE)
 
