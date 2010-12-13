@@ -4,15 +4,16 @@
 #  Description:
 #
 #        Usage: make            -- generate executable
-#               make test       --
+#               make test       -- generate executable with 
+#                                  debugging and verbose output
 #               make tags       -- generate tags file
-#               make install    --
-#               make uninstall  --
-#               make run-test   --
+#               make install    -- copies exec to $HOME/bin
+#               make uninstall  -- removes exec from $HOME/bin
+#               make run-test   -- runs the test suite
 #               make clean      -- remove objects, executable,
 #                                  prerequisits
 #               make clean-test -- same as clean, changes exec name
-#               make print
+#               make print      -- prints the value of $SRC and $OBJ
 #               make tarball    -- generate compressed archive
 #               make zip        -- generate compressed archive
 #
@@ -34,19 +35,18 @@ vpath %.c  src
 TARGET = sechash
 
 # ==============================================================
-BUILD_DIR = build
 SRC_DIR   = src
 OBJ_DIR   = obj
+INCL_DIR  = include
 
 # ==============================================================
 INSTALL_DIR  = $(HOME)/bin
-INCL         = include
-INCL_LIB_HDR = $(HOME)/lib/include
 LIB_DIR      = $(HOME)/lib 
+INCL_LIB_HDR = $(HOME)/lib/include
 LIB          = util
 
 CC         = gcc
-CFLAGS     = -O2 -Wall -std=c99 -pedantic -I$(INCL) -I$(INCL_LIB_HDR)
+CFLAGS     = -O2 -Wall -std=c99 -pedantic -I$(INCL_DIR) -I$(INCL_LIB_HDR)
 DEBUGFLAGS = -ggdb -DDEBUG
 
 # ==============================================================
@@ -61,8 +61,10 @@ CFLAGS += $(LDFLAGS)
 
 
 # ------------  archive generation ---------------------------------------------
-TARBALL_EXCLUDE = *.{o,gz,zip}
-ZIP_EXCLUDE     = *.{o,gz,zip}
+TARBALL_EXCLUDE1 = obj/*.o
+TARBALL_EXCLUDE2 = tags
+TARBALL_EXCLUDE3 = *.{gz,zip}
+ZIP_EXCLUDE     = \*.o \*,gz \*,zip
 
 prod:$(TARGET) tags 
 
@@ -79,10 +81,10 @@ debug: CFLAGS += $(DEBUGFLAGS)
 debug clean-test run-test: EXEC = $(TARGET)-gdb
 
 
-.PHONY: tags install uninstall clean clean-test dist run-test
+.PHONY: tags install uninstall clean clean-test run-test
 
 tags:
-	ctags $(INCL)/*.h $(SRC_DIR)/*.c
+	ctags $(INCL_DIR)/*.h $(SRC_DIR)/*.c
 
 install:
 	cp $(EXEC) $(INSTALL_DIR)/
@@ -107,7 +109,9 @@ run-test:
 tarball:
 	@lokaldir=`pwd`; lokaldir=$${lokaldir##*/}; \
     rm --force $$lokaldir.tar.gz;               \
-    tar --exclude=$(TARBALL_EXCLUDE)            \
+    tar --exclude=$(TARBALL_EXCLUDE1)           \
+        --exclude=$(TARBALL_EXCLUDE2)           \
+        --exclude=$(TARBALL_EXCLUDE3)           \
         --create                                \
         --gzip                                  \
         --verbose                               \

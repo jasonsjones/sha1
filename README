@@ -25,10 +25,9 @@
 *
 * README        - this file!
 * makefile      - Makefile to build project
-* tags          - tags file produced by ctags
 *
 **********************************************************************
-*  DIR STRUCTURE
+*  DIR STRUCTURE:
 *
 *     sec-hash/
 *           |
@@ -48,7 +47,7 @@
 *
 **********************************************************************
 *
-*  BUILD 
+*  BUILD: 
 *
 * To build the basic executable (without verbose output enabled), run:
 *
@@ -69,9 +68,9 @@
 *     This is good to see how things are working and to verify
 *     the output against the examples listed in the appendix
 *     of the specification.  Included in the 'tests' directory
-*     are two files, one.txt and two.txt.  These files represent
-*     the two of the three example cases located in the
-*     specification for the sha-1 algorithm.
+*     are two files, sha_spec_example{1,2}.txt.  These files
+*     represent the two of the three example cases located in
+*     the specification for the sha-1 algorithm.
 *
 * To build and run the test suite located in the 'tests' directory,
 * run:
@@ -87,7 +86,7 @@
 *
 **********************************************************************
 *
-*  INSTALL 
+*  INSTALL: 
 *
 * To install the executable in $(HOME)/bin, run:
 *
@@ -103,7 +102,7 @@
 *
 **********************************************************************
 *
-*  USAGE
+*  USAGE:
 *
 *  To obtain a sha1 message digest for a particular file, run:
 *
@@ -119,7 +118,7 @@
 *
 **********************************************************************
 *
-*  COPYING/LICENSE
+*  COPYING/LICENSE:
 *
 *
 *
