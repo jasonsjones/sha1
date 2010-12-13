@@ -485,6 +485,12 @@ sha_process_input(struct sha_hash_s *hash, FILE *fd)
         }
     }
 
+    /* need to handle the end case when EOF is encountered at a
+     * multiple of 512 bits (or 64 bytes).  without this,
+     * sha_compute would never be called. */
+    if (hash->msg_idx == 64)
+        sha_compute(hash);
+
     /* always pad the msg */
     sha_pad(hash);
 }

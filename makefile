@@ -68,7 +68,7 @@ ZIP_EXCLUDE     = \*.o \*,gz \*,zip
 
 prod:$(TARGET) tags 
 
-test: debug tags run-test
+test: debug tags
 
 $(TARGET) debug: $(OBJ)
 	$(CC) $(OBJ) -o $(EXEC) 

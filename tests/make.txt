@@ -1,4 +1,5 @@
 Short Contents
+**************
 
 GNU `make'
 1 Overview of `make'
