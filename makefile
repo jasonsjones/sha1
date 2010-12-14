@@ -46,8 +46,7 @@ INCL_LIB_HDR = $(HOME)/lib/include
 LIB          = util
 
 CC         = gcc
-#CFLAGS     = -O2 -Wall -std=c99 -pedantic -I$(INCL_DIR) -I$(INCL_LIB_HDR)
-CFLAGS     = -O2 -Wall -std=c99 -pedantic -I$(INCL_DIR)
+CFLAGS     = -O2 -Wall -std=c99 -pedantic -I$(INCL_DIR) -I$(INCL_LIB_HDR)
 DEBUGFLAGS = -ggdb -DDEBUG
 
 # ==============================================================
@@ -56,7 +55,7 @@ OBJ  = $(addprefix $(OBJ_DIR)/, $(notdir $(SRC:%.c=%.o)))
 EXEC = $(TARGET)
 
 LDFLAGS = -L$(LIB_DIR) -l$(LIB)
-#CFLAGS += $(LDFLAGS)
+CFLAGS += $(LDFLAGS)
 
 # ==============================================================
 
