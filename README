@@ -58,10 +58,11 @@
 *
 * To build the executable with verbose output enabled, run:
 *
-*   :$ make test
+*   :$ make verbose
 *
 *   - Without modification to the makefile, this will produce an
-*     executable named 'sechash-gdb'.
+*     executable named 'sechash-gdb'.  This will also define the
+*     DEBUG preprocessor directive.
 *
 *   - Running this program will produce a verbose ouput which
 *     prints the components of the hash algorithm for each round.

@@ -4,7 +4,7 @@
 #  Description:
 #
 #        Usage: make            -- generate executable
-#               make test       -- generate executable with 
+#               make verbose    -- generate executable with 
 #                                  debugging and verbose output
 #               make tags       -- generate tags file
 #               make install    -- copies exec to $HOME/bin
@@ -46,7 +46,8 @@ INCL_LIB_HDR = $(HOME)/lib/include
 LIB          = util
 
 CC         = gcc
-CFLAGS     = -O2 -Wall -std=c99 -pedantic -I$(INCL_DIR) -I$(INCL_LIB_HDR)
+#CFLAGS     = -O2 -Wall -std=c99 -pedantic -I$(INCL_DIR) -I$(INCL_LIB_HDR)
+CFLAGS     = -O2 -Wall -std=c99 -pedantic -I$(INCL_DIR)
 DEBUGFLAGS = -ggdb -DDEBUG
 
 # ==============================================================
@@ -55,7 +56,7 @@ OBJ  = $(addprefix $(OBJ_DIR)/, $(notdir $(SRC:%.c=%.o)))
 EXEC = $(TARGET)
 
 LDFLAGS = -L$(LIB_DIR) -l$(LIB)
-CFLAGS += $(LDFLAGS)
+#CFLAGS += $(LDFLAGS)
 
 # ==============================================================
 
@@ -68,7 +69,7 @@ ZIP_EXCLUDE     = \*.o \*,gz \*,zip
 
 prod:$(TARGET) tags 
 
-test: debug tags
+verbose: debug tags
 
 $(TARGET) debug: $(OBJ)
 	$(CC) $(OBJ) -o $(EXEC) 
@@ -78,7 +79,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 
 
 debug: CFLAGS += $(DEBUGFLAGS)
-debug clean-test run-test: EXEC = $(TARGET)-gdb
+debug clean-test: EXEC = $(TARGET)-gdb
 
 
 .PHONY: tags install uninstall clean clean-test run-test
