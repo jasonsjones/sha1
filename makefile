@@ -48,24 +48,21 @@ LIB          = util
 CC         = gcc
 CFLAGS     = -O2 -Wall -std=c99 -pedantic -I$(INCL_DIR) -I$(INCL_LIB_HDR)
 DEBUGFLAGS = -ggdb -DDEBUG
+LDFLAGS    = -L$(LIB_DIR) -l$(LIB)
+CFLAGS    += $(LDFLAGS)
 
 # ==============================================================
 SRC  = $(wildcard $(SRC_DIR)/*.c)
 OBJ  = $(addprefix $(OBJ_DIR)/, $(notdir $(SRC:%.c=%.o)))
 EXEC = $(TARGET)
 
-LDFLAGS = -L$(LIB_DIR) -l$(LIB)
-CFLAGS += $(LDFLAGS)
-
-# ==============================================================
-
-
-# ------------  archive generation ---------------------------------------------
+# ============  archive generation =============================
 TARBALL_EXCLUDE1 = obj/*.o
 TARBALL_EXCLUDE2 = tags
 TARBALL_EXCLUDE3 = *.{gz,zip}
 ZIP_EXCLUDE     = \*.o \*,gz \*,zip
 
+# ==============================================================
 prod:$(TARGET) tags 
 
 verbose: debug tags
@@ -80,7 +77,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 debug: CFLAGS += $(DEBUGFLAGS)
 debug clean-test: EXEC = $(TARGET)-gdb
 
-
+# ================= PHONY targets ===============================
 .PHONY: tags install uninstall clean clean-test run-test
 
 tags:
