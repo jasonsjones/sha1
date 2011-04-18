@@ -46,7 +46,7 @@ INCL_LIB_HDR = $(HOME)/lib/include
 LIB          = util
 
 CC         = gcc
-CFLAGS     = -O2 -Wall -std=c99 -pedantic -I$(INCL_DIR) -I$(INCL_LIB_HDR)
+CFLAGS     = -O1 -Wall -std=c99 -pedantic -I$(INCL_DIR) -I$(INCL_LIB_HDR)
 DEBUGFLAGS = -ggdb -DDEBUG
 LDFLAGS    = -L$(LIB_DIR) -l$(LIB)
 CFLAGS    += $(LDFLAGS)

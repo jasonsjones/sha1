@@ -31,17 +31,24 @@
 *
 *     sec-hash/
 *           |
-*           --doc/
-*           |
-*           --include/
-*           |
-*           --lib/
-*           |
-*           --obj/
-*           |
-*           --src/
-*           |
-*           --tests/
+*           |-- doc
+*           |   `-- man
+*           |       `-- sec-hash.1
+*           |-- include
+*           |   `-- sec-hash.h
+*           |-- lib
+*           |-- makefile
+*           |-- obj
+*           |-- README
+*           |-- src
+*           |   |-- main.c
+*           |   `-- sec-hash.c
+*           |-- tags
+*           `-- tests
+*               |-- lorem_ipsum.txt
+*               |-- sha_spec_example1.txt
+*               |-- sha_spec_example2.txt
+*               `-- sha_test.sh
 *
 * TODO:  describe the purpose for each directory
 *
