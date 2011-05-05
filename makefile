@@ -32,7 +32,7 @@
 vpath %.h  include
 vpath %.c  src
 
-TARGET = sechash
+TARGET = sha1
 
 # ==============================================================
 SRC_DIR   = src

@@ -1,6 +1,6 @@
 /*
  * ==============================================================
- *       Filename:  sec-hash.c
+ *       Filename:  sha1.c
  *
  *    Description:  Implementation of the Secure Hash Algorithm
  *                  (SHA-1).  SHA-1 produces a 160-bit message
@@ -10,7 +10,7 @@
  *
  *        Version:  1.0
  *        Created:  11/13/2010 
- *       Modified:  03/09/2011 09:10:44 PM
+ *       Modified:  05/05/2011 06:10:40 AM
  *       Revision:  none
  *       Compiler:  gcc
  *
@@ -28,7 +28,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "sec-hash.h"
+#include "sha1.h"
 
 
 /* Constants K sub t */
