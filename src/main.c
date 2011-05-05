@@ -7,7 +7,7 @@
  *
  *        Version:  1.0
  *        Created:  11/29/2010 09:05:37 PM
- *       Modified:  05/05/2011 06:10:33 AM
+ *       Modified:  05/05/2011 06:13:01 AM
  *       Revision:  none
  *       Compiler:  gcc
  *
@@ -19,7 +19,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "sha1-hash.h"
+#include "sha1.h"
 
 
 /* 
