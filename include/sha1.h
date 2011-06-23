@@ -10,7 +10,7 @@
  *
  *        Version:  1.0
  *        Created:  11/13/2010 
- *       Modified:  05/05/2011 06:10:30 AM
+ *       Modified:  06/22/2011 09:41:10 PM
  *       Revision:  none
  *       Compiler:  gcc
  *
@@ -46,14 +46,16 @@ struct sha_hash_s {
     uint32  msg_digest[5];        /* from spec: H[0], ..., H[4] */
 };
 
-extern void sha_init(struct sha_hash_s *);
+void sha_init(struct sha_hash_s *);
 
-extern void sha_process_input(struct sha_hash_s *, FILE *);
+void sha_process_file(struct sha_hash_s *, FILE *fd);
+void sha_process_str(struct sha_hash_s *, char *str);
 
-extern void sha_compute(struct sha_hash_s *);
+void sha_compute(struct sha_hash_s *);
 
-extern void sha_output(struct sha_hash_s *, char *);
+void sha_output(struct sha_hash_s *, char *);
 
-extern void sha_hash(char *);
+void sha_hash_file(char *file);
+void sha_hash_str(char *str);
 
 #endif

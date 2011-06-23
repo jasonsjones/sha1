@@ -7,12 +7,12 @@
  *
  *        Version:  1.0
  *        Created:  11/29/2010 09:05:37 PM
- *       Modified:  05/05/2011 06:13:01 AM
+ *       Modified:  06/22/2011 09:43:21 PM
  *       Revision:  none
  *       Compiler:  gcc
  *
  *         Author:  Jason Jones (), jsjones96@gmail.com
- *        Company:  J2Labs
+ *        Company:
  *
  * ==============================================================
  */
@@ -36,14 +36,19 @@
 int
 main(int argc, char *argv[])
 {
-    if (argc > 1 ) {
-        while (argc > 1) {
-            sha_hash(argv[1]);
-            argc--;
-            argv++;
-        }
-    } else {
-        sha_hash(NULL);
-    }
+/*     if (argc > 1 ) {
+ *         while (argc > 1) {
+ *             sha_hash_file(argv[1]);
+ *             argc--;
+ *             argv++;
+ *         }
+ *     } else {
+ *         sha_hash_file(NULL);
+ *     }
+ */
+
+    sha_hash_str("jason jones");
+    sha_hash_str("hometownboy32@ubuntu");
+
     return EXIT_SUCCESS;
 }

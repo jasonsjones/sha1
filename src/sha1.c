@@ -10,12 +10,12 @@
  *
  *        Version:  1.0
  *        Created:  11/13/2010 
- *       Modified:  05/05/2011 06:10:40 AM
+ *       Modified:  06/22/2011 09:40:26 PM
  *       Revision:  none
  *       Compiler:  gcc
  *
  *         Author:  Jason Jones (), jsjones96@gmail.com
- *        Company:  J2Labs
+ *        Company:
  *
  *  Reference Federal Information Processing Standard 
  *  Publications (FIPS PUBS) 180-1 and FIPS PUB 180-2 for
@@ -229,7 +229,7 @@ reset_block(uint8 *block, int length)
     int i;
     for(i = 0; i < length; i++)
         block[i] = 0x00;
-}
+}		/* -----  end of static function reset_block  ----- */
 
 
 
@@ -247,7 +247,7 @@ static uint32
 rotl(uint32 word, int n) 
 {
     return (word << n) | (word >> (32 - n));
-}
+}		/* -----  end of static function rotl  ----- */
 
 
 
@@ -263,7 +263,7 @@ static uint32
 ch(uint32 x, uint32 y, uint32 z)
 {
     return (x & y) | ((~x) & z);
-}
+}		/* -----  end of static function ch  ----- */
 
 
 
@@ -280,7 +280,7 @@ static uint32
 parity(uint32 x, uint32 y, uint32 z)
 {
     return (x ^ y ^ z);
-}
+}		/* -----  end of static function parity  ----- */
 
 
 
@@ -296,7 +296,7 @@ static uint32
 maj(uint32 x, uint32 y, uint32 z)
 {
     return (x & y) | (x & z) | (y & z);
-}
+}		/* -----  end of static function maj  ----- */
 
 
 
@@ -393,7 +393,8 @@ sha_pad(struct sha_hash_s *hash)
 
     /* the last (and final) block is now full, so process the block */
     sha_compute(hash);
-}
+
+}		/* -----  end of function sha_pad  ----- */
 
 
 
@@ -426,13 +427,14 @@ sha_init(struct sha_hash_s *hash)
     hash->msg_digest[2] = 0x98BADCFE;
     hash->msg_digest[3] = 0x10325476;
     hash->msg_digest[4] = 0xC3D2E1F0;
-}
+
+}		/* -----  end of function sha_init  ----- */
 
 
 
 /* 
  * ===  FUNCTION  ===============================================
- *         Name:  sha_process_input
+ *         Name:  sha_process_file
  *  Description:  Processes the input and populates the
  *                corresponding members of the sha_hash_s struct.
  *                The input is specified by the FILE pointer, fd,
@@ -447,7 +449,7 @@ sha_init(struct sha_hash_s *hash)
  * ==============================================================
  */
 void
-sha_process_input(struct sha_hash_s *hash, FILE *fd)
+sha_process_file(struct sha_hash_s *hash, FILE *fd)
 {
 
     int ch = 0;
@@ -493,8 +495,63 @@ sha_process_input(struct sha_hash_s *hash, FILE *fd)
 
     /* always pad the msg */
     sha_pad(hash);
-}
 
+}		/* -----  end of function sha_process_file  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ===============================================
+ *         Name:  sha_process_str
+ *  Description:  
+ * ==============================================================
+ */
+void
+sha_process_str(struct sha_hash_s *hash, char *str)
+{
+    while (*str) {
+
+        /* add character to the current msg block as long as there is room */
+        if (hash->msg_idx < BLK_SIZE) {
+            hash->msg_block[hash->msg_idx++] = *str;
+
+
+        /* msg block if full, so pass off the current block and start new one */
+        } else { 
+            sha_compute(hash);
+
+            /* reset the block */
+            reset_block(hash->msg_block, BLK_SIZE);
+            hash->msg_idx = 0;
+
+            /* can't lose the character we just grabbed on this pass */
+            hash->msg_block[hash->msg_idx++] = *str;
+        }
+
+        /* increment the length of the msg; if the lo 4 bytes are full
+         * that is == 2^32, then reset lo 4 bytes and increment the hi
+         * 4 bytes, otherwise just add the 8 bits to the length  */
+        if (hash->lo_length == 0xFFFFFFFF) {
+            hash->lo_length = 0;
+            hash->hi_length++;
+
+        } else {
+            hash->lo_length += 8;
+        }
+
+        str++;
+    }
+
+    /* need to handle the end case when EOF is encountered at a
+     * multiple of 512 bits (or 64 bytes).  without this,
+     * sha_compute would never be called. */
+    if (hash->msg_idx == 64)
+        sha_compute(hash);
+
+    /* always pad the msg */
+    sha_pad(hash);
+
+}		/* -----  end of function sha_process_str  ----- */
 
 
 /* 
@@ -613,7 +670,8 @@ sha_compute(struct sha_hash_s *hash)
         printf("H[%d] = %s\n", i,  hex_word);
     }
 #endif
-}
+
+}		/* -----  end of function sha_compute  ----- */
 
 
 
@@ -639,9 +697,10 @@ sha_output(struct sha_hash_s *hash, char *filename)
         hexdump_word(hash->msg_digest[i], hex_word);
         printf("%s",  hex_word);
     }
+    
     printf("  %s\n", filename);
 
-}
+}		/* -----  end of function sha_output  ----- */
 
 
 
@@ -659,7 +718,7 @@ sha_output(struct sha_hash_s *hash, char *filename)
  * ==============================================================
  */
 void
-sha_hash(char *filename)
+sha_hash_file(char *filename)
 {
     FILE  *input_file;
 
@@ -682,7 +741,7 @@ sha_hash(char *filename)
         input_file = stdin;
     }
 
-    sha_process_input(&hash, input_file);
+    sha_process_file(&hash, input_file);
 
     sha_output(&hash, filename);
 
@@ -691,4 +750,23 @@ sha_hash(char *filename)
         fprintf(stderr, "couldn't close file '%s'\n", filename);
         exit(EXIT_FAILURE);
     }
-}
+
+}		/* -----  end of function sha_hash_file  ----- */
+
+
+/* 
+ * ===  FUNCTION  ===============================================
+ *         Name:  sha_hash_str
+ *  Description:  
+ * ==============================================================
+ */
+void
+sha_hash_str(char *str)
+{
+    struct sha_hash_s hash;
+    sha_init(&hash);
+
+    sha_process_str(&hash, str);
+    sha_output(&hash, str);
+
+}		/* -----  end of function sha_hash_str  ----- */
