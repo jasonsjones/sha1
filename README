@@ -1,9 +1,9 @@
 **********************************************************************
 *
-* README for sec-hash--an implementation of the secure hash
-*        algorithm (SHA1).
+* README for sha1--an implementation of the secure hash
+*                  algorithm (SHA1).
 *
-* Last Updated: December 2010
+* Last Updated: May 2011
 *
 * AUTHOR  Jason S. Jones <jsjones96@gmail.com>
 *
