@@ -7,13 +7,29 @@
  *
  *        Version:  1.0
  *        Created:  11/29/2010 09:05:37 PM
- *       Modified:  06/22/2011 09:43:21 PM
+ *       Modified:  06/24/2011 07:25:54 AM
  *       Revision:  none
  *       Compiler:  gcc
  *
  *         Author:  Jason Jones (), jsjones96@gmail.com
  *        Company:
  *
+ *  Copyright (C) 2010-2011  Jason Jones
+ *
+ *  This program is free software: you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation, either version
+ *  3 of the License, or (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be
+ *  useful, but WITHOUT ANY WARRANTY; without even the implied
+ *  warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ *  PURPOSE.  See the GNU General Public License for more
+ *  details.
+ *
+ *  You should have received a copy of the GNU General Public
+ *  License along with this program.  If not, see
+ *  <http://www.gnu.org/licenses/>.
  * ==============================================================
  */
 
@@ -47,8 +63,7 @@ main(int argc, char *argv[])
  *     }
  */
 
-    sha_hash_str("jason jones");
-    sha_hash_str("hometownboy32@ubuntu");
+    printf("%s\n", sha_hash_str("jason jones"));
 
     return EXIT_SUCCESS;
 }

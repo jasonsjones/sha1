@@ -10,18 +10,35 @@
  *
  *        Version:  1.0
  *        Created:  11/13/2010 
- *       Modified:  06/22/2011 09:41:10 PM
+ *       Modified:  06/24/2011 07:25:52 AM
  *       Revision:  none
  *       Compiler:  gcc
  *
  *         Author:  Jason Jones (), jsjones96@gmail.com
- *        Company:  J2Labs
+ *        Company:
  *
  *  Reference Federal Information Processing Standard 
  *  Publications (FIPS PUBS) 180-1 and FIPS PUB 180-2
  *  for specification of the sha-1 hash function. FIPS
  *  PUBS are issued by the National Institute of Standards
  *  and Technology (NIST).
+ *
+ *  Copyright (C) 2010-2011  Jason Jones
+ *
+ *  This program is free software: you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation, either version
+ *  3 of the License, or (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be
+ *  useful, but WITHOUT ANY WARRANTY; without even the implied
+ *  warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ *  PURPOSE.  See the GNU General Public License for more
+ *  details.
+ *
+ *  You should have received a copy of the GNU General Public
+ *  License along with this program.  If not, see
+ *  <http://www.gnu.org/licenses/>.
  *
  * ==============================================================
  */
@@ -46,16 +63,11 @@ struct sha_hash_s {
     uint32  msg_digest[5];        /* from spec: H[0], ..., H[4] */
 };
 
-void sha_init(struct sha_hash_s *);
 
-void sha_process_file(struct sha_hash_s *, FILE *fd);
-void sha_process_str(struct sha_hash_s *, char *str);
-
-void sha_compute(struct sha_hash_s *);
-
-void sha_output(struct sha_hash_s *, char *);
 
 void sha_hash_file(char *file);
-void sha_hash_str(char *str);
+
+
+char * sha_hash_str(char *str);
 
 #endif

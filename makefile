@@ -41,15 +41,16 @@ INCL_DIR  = include
 
 # ==============================================================
 INSTALL_DIR  = $(HOME)/bin
-LIB_DIR      = $(HOME)/lib 
-INCL_LIB_HDR = $(HOME)/lib/include
-LIB          = util
+#LIB_DIR      = $(HOME)/lib 
+#INCL_LIB_HDR = $(HOME)/lib/include
+#LIB          = util
 
 CC         = gcc
-CFLAGS     = -O1 -Wall -std=c99 -pedantic -I$(INCL_DIR) -I$(INCL_LIB_HDR)
+#CFLAGS     = -O1 -Wall -std=c99 -pedantic -I$(INCL_DIR) -I$(INCL_LIB_HDR)
+CFLAGS     = -O1 -Wall -std=c99 -pedantic -I$(INCL_DIR)
 DEBUGFLAGS = -ggdb -DDEBUG
-LDFLAGS    = -L$(LIB_DIR) -l$(LIB)
-CFLAGS    += $(LDFLAGS)
+#LDFLAGS    = -L$(LIB_DIR) -l$(LIB)
+#CFLAGS    += $(LDFLAGS)
 
 # ==============================================================
 SRC  = $(wildcard $(SRC_DIR)/*.c)
@@ -62,6 +63,10 @@ TARBALL_EXCLUDE2 = tags
 TARBALL_EXCLUDE3 = *.{gz,zip}
 ZIP_EXCLUDE     = \*.o \*,gz \*,zip
 
+
+
+
+# ==============================================================
 # ==============================================================
 prod:$(TARGET) tags 
 
