@@ -29,26 +29,6 @@
 **********************************************************************
 *  DIR STRUCTURE:
 *
-*     sec-hash/
-*           |
-*           |-- doc
-*           |   `-- man
-*           |       `-- sec-hash.1
-*           |-- include
-*           |   `-- sec-hash.h
-*           |-- lib
-*           |-- makefile
-*           |-- obj
-*           |-- README
-*           |-- src
-*           |   |-- main.c
-*           |   `-- sec-hash.c
-*           |-- tags
-*           `-- tests
-*               |-- lorem_ipsum.txt
-*               |-- sha_spec_example1.txt
-*               |-- sha_spec_example2.txt
-*               `-- sha_test.sh
 *
 * TODO:  describe the purpose for each directory
 *
@@ -61,14 +41,14 @@
 *   :$ make 
 *
 *   - Without modification to the makefile, this will produce an
-*     executable named 'sechash'.
+*     executable named 'sha1'.
 *
 * To build the executable with verbose output enabled, run:
 *
 *   :$ make verbose
 *
 *   - Without modification to the makefile, this will produce an
-*     executable named 'sechash-gdb'.  This will also define the
+*     executable named 'sha1-gdb'.  This will also define the
 *     DEBUG preprocessor directive.
 *
 *   - Running this program will produce a verbose ouput which
@@ -88,7 +68,7 @@
 *
 *   - 'make run-test' will execute the script in the tests directory
 *     which will loop over all the .txt files locaed in the directory
-*     and run the actual 'sha1sum' program and then run 'sechash'.
+*     and run the actual 'sha1sum' program and then run 'sha1'.
 *     The message digests will be side-by-side (so to speak), so you
 *     will be able to visually inspect the digest for correctness.
 *
@@ -114,11 +94,11 @@
 *
 *  To obtain a sha1 message digest for a particular file, run:
 *
-*   :$ sechash <filename>
+*   :$ sha1 <filename>
 *
 *  To obtain a sha1 message digest for several files, run:
 *
-*   :$ sechash <filename1> <filename2> <filename3>
+*   :$ sha1 <filename1> <filename2> <filename3>
 *
 *   - For now, the output is sent to stdout.  Maybe a future update
 *     will include the option to send the msg digest to another
