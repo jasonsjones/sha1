@@ -10,7 +10,7 @@
  *
  *        Version:  1.0
  *        Created:  11/13/2010
- *       Modified:  06/24/2011 07:26:43 AM
+ *       Modified:  08/02/2011 09:37:10 PM
  *       Revision:  none
  *       Compiler:  gcc
  *
@@ -733,7 +733,11 @@ sha_compute(struct sha_hash_s *hash)
 static void
 sha_output(struct sha_hash_s *hash, char *name)
 {
-    printf("%s  %s\n", sha_get_digest(hash), name);
+    char *digest = sha_get_digest(hash);
+
+    printf("%s  %s\n", digest, name);
+    
+    free(digest);
 }		/* -----  end of static function sha_output  ----- */
 
 
@@ -797,6 +801,7 @@ sha_hash_file(char *filename)
 
     /* filename == NULL, we read from stdin */
     } else {
+
         input_file = stdin;
     }
 

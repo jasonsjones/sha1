@@ -7,7 +7,7 @@
  *
  *        Version:  1.0
  *        Created:  11/29/2010 09:05:37 PM
- *       Modified:  06/24/2011 07:25:54 AM
+ *       Modified:  08/02/2011 09:29:13 PM
  *       Revision:  none
  *       Compiler:  gcc
  *
@@ -52,18 +52,18 @@
 int
 main(int argc, char *argv[])
 {
-/*     if (argc > 1 ) {
- *         while (argc > 1) {
- *             sha_hash_file(argv[1]);
- *             argc--;
- *             argv++;
- *         }
- *     } else {
- *         sha_hash_file(NULL);
- *     }
- */
+    if (argc > 1 ) {
 
-    printf("%s\n", sha_hash_str("jason jones"));
+        while (argc > 1) {
+            sha_hash_file(argv[1]);
+            argc--;
+            argv++;
+        }
+
+    } else {
+
+        sha_hash_file(NULL);
+    }
 
     return EXIT_SUCCESS;
 }
