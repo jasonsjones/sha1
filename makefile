@@ -41,14 +41,16 @@ INCL_DIR  = include
 
 # ==============================================================
 INSTALL_DIR  = $(HOME)/bin
+
 #LIB_DIR      = $(HOME)/lib 
 #INCL_LIB_HDR = $(HOME)/lib/include
 #LIB          = util
 
 CC         = gcc
+CFLAGS     = -O0 -Wall -std=c99 -pedantic -I$(INCL_DIR)
 #CFLAGS     = -O1 -Wall -std=c99 -pedantic -I$(INCL_DIR) -I$(INCL_LIB_HDR)
-CFLAGS     = -O1 -Wall -std=c99 -pedantic -I$(INCL_DIR)
 DEBUGFLAGS = -ggdb -DDEBUG
+
 #LDFLAGS    = -L$(LIB_DIR) -l$(LIB)
 #CFLAGS    += $(LDFLAGS)
 
@@ -104,7 +106,7 @@ print:
 	@echo "obj files: " $(OBJ)
 
 run-test:
-	tests/sha_test.sh
+	test/sha_test.sh
 
 
 # ------------ tarball generation ---------------
