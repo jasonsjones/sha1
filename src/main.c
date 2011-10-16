@@ -7,7 +7,7 @@
  *
  *        Version:  1.0
  *        Created:  11/29/2010 09:05:37 PM
- *       Modified:  08/02/2011 09:29:13 PM
+ *       Modified:  10/12/2011 09:43:13 PM
  *       Revision:  none
  *       Compiler:  gcc
  *
@@ -55,15 +55,16 @@ main(int argc, char *argv[])
     if (argc > 1 ) {
 
         while (argc > 1) {
-            sha_hash_file(argv[1]);
+            sha_hash_file_output(argv[1]);
             argc--;
             argv++;
         }
 
     } else {
 
-        sha_hash_file(NULL);
+        sha_hash_file_output(NULL);
     }
+
 
     return EXIT_SUCCESS;
 }

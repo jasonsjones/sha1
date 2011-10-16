@@ -10,7 +10,7 @@
  *
  *        Version:  1.0
  *        Created:  11/13/2010 
- *       Modified:  06/24/2011 07:25:52 AM
+ *       Modified:  10/12/2011 09:42:33 PM
  *       Revision:  none
  *       Compiler:  gcc
  *
@@ -60,14 +60,15 @@ struct sha_hash_s {
     uint32  hi_length;            /* high 32-bits of msg length */
     uint32  lo_length;            /* low 32-bits of msg length */
 
-    uint32  msg_digest[5];        /* from spec: H[0], ..., H[4] */
+    uint32  h_sub[5];             /* from spec: H[0], ..., H[4] */
+
 };
 
 
 
-void sha_hash_file(char *file);
-
-
+char * sha_hash_file(char *file);
 char * sha_hash_str(char *str);
+
+void sha_hash_file_output(char *file);
 
 #endif

@@ -3,7 +3,11 @@
  README for sha1--an implementation of the secure hash
                   algorithm (SHA1).
 
- Last Updated: May 2011
+ +----------------------------------------------------------------+
+ |   *** This program only runs on a linux system ***             |
+ +----------------------------------------------------------------+
+
+ Last Updated: October 2011
 
  AUTHOR  Jason S. Jones <jsjones96@gmail.com>
 
@@ -109,6 +113,8 @@
 
  COPYING/LICENSE:
 
-
+  This progam is licensed under the Gnu General Public License v3
+  (GPLv3).  See the file 'LICENSE' included with the source code for
+  more details.
 
 **********************************************************************

@@ -10,7 +10,7 @@
  *
  *        Version:  1.0
  *        Created:  11/13/2010
- *       Modified:  08/02/2011 09:37:10 PM
+ *       Modified:  10/16/2011 06:59:04 AM
  *       Revision:  none
  *       Compiler:  gcc
  *
@@ -47,30 +47,39 @@
 #include <stdlib.h>
 #include "sha1.h"
 
+
+
 /******************* FUNCTION PROTOTYPES ***********************/
 static void
-sha_init(struct sha_hash_s *hash);
+init(struct sha_hash_s *hash);
+
 
 static void
-sha_pad(struct sha_hash_s *hash);
+pad(struct sha_hash_s *hash);
+
 
 static void
-sha_output(struct sha_hash_s *hash, char *filename);
+process_file(struct sha_hash_s *hash, FILE *fd);
+
 
 static void
-sha_process_file(struct sha_hash_s *hash, FILE *fd);
+process_str(struct sha_hash_s *hash, char *str);
+
 
 static void
-sha_process_str(struct sha_hash_s *hash, char *str);
+compute_hash(struct sha_hash_s *hash);
 
-static void
-sha_compute(struct sha_hash_s *hash);
 
 static char *
-sha_get_digest(struct sha_hash_s *hash);
+get_digest(struct sha_hash_s *hash);
 
 /***************** END FUNCTION PROTOTYPES *********************/
 
+
+/******************** GLOBAL VARIABLES *************************/
+
+/* Array for final sha1 hash  */
+static char sha1hash[40] = { 0x00 };
 
 /* Constants K sub t */
 static uint32 k[ ] = { 0x5A827999,      /* K for  0 <= t <= 19 */
@@ -79,9 +88,11 @@ static uint32 k[ ] = { 0x5A827999,      /* K for  0 <= t <= 19 */
                        0xCA62C1D6       /* K for 60 <= t <= 79 */ 
 };
 
+/**************************************************************/
 
 
-/******************* UTILITY FUNCTIONS ***********************/
+
+/******************* UTILITY FUNCTIONS ************************/
 
 /* 
  * ===  FUNCTION  ===============================================
@@ -148,13 +159,13 @@ hexdump_word(uint32 word, char *str)
  *                buf (and idx) into one 4-byte word.  Returns
  *                the resulting 4-byte word.
  *
- *  Consider to following example:
- *        n  = 00000000000000000000000000000000
- *     byte 0: 01100011    bitwise or'd with
- *             byte 1; 00111110   bitwise or'd with
- *                     byte 2: 11010010   bitwise or'd with
- *                             byte 3: 00000101  
- *        n =  01100011001111101101001000000101
+ *      Consider to following example:
+ *            n  = 00000000000000000000000000000000
+ *         byte 0: 01100011    bitwise or'd with
+ *                 byte 1; 00111110   bitwise or'd with
+ *                         byte 2: 11010010   bitwise or'd with
+ *                                 byte 3: 00000101  
+ *            n =  01100011001111101101001000000101
  * ==============================================================
  */
 static uint32
@@ -214,6 +225,7 @@ get_uint8(uint32 word, int byte_num)
 }		/* -----  end of static function get_uint8  ----- */
 
 
+#ifdef DEBUG
 /* 
  * ===  FUNCTION  ===============================================
  *         Name:  print_block
@@ -231,7 +243,6 @@ get_uint8(uint32 word, int byte_num)
  *  verbose output.
  * ==============================================================
  */
-#ifdef DEBUG
 static void
 print_block(struct sha_hash_s *hash)
 {
@@ -343,7 +354,7 @@ maj(uint32 x, uint32 y, uint32 z)
 
 /* 
  * ===  FUNCTION  ===============================================
- *         Name:  sha_pad
+ *         Name:  pad
  *  Description:  Pads a msg block to ensure that it is contains
  *                512 bits.  A msg block is first padded with a
  *                '1' bit, then followed by k '0' bits, for k >
@@ -354,7 +365,7 @@ maj(uint32 x, uint32 y, uint32 z)
  * ==============================================================
  */
 static void
-sha_pad(struct sha_hash_s *hash)
+pad(struct sha_hash_s *hash)
 {
     /* if the msg_idx is less than 56 (0-55), then there is
      * enough room to append a '1' bit, k '0' bits for k > 0,
@@ -384,7 +395,7 @@ sha_pad(struct sha_hash_s *hash)
         }
 
         /* the msg block is full, so process the block */
-        sha_compute(hash);
+        compute_hash(hash);
 
         /* reset the msg block  */
         reset_block(hash->msg_block, BLK_SIZE);
@@ -433,15 +444,15 @@ sha_pad(struct sha_hash_s *hash)
     hash->msg_idx+=4;
 
     /* the last (and final) block is now full, so process the block */
-    sha_compute(hash);
+    compute_hash(hash);
 
-}		/* -----  end of static function sha_pad  ----- */
+}		/* -----  end of static function pad  ----- */
 
 
 
 /* 
  * ===  FUNCTION  ===============================================
- *         Name:  sha_init
+ *         Name:  init
  *  Description:  Initializes all members of the sha_hash_s
  *                structure to sane values. It also initializes
  *                the values of the msg digest to the values
@@ -449,7 +460,7 @@ sha_pad(struct sha_hash_s *hash)
  * ==============================================================
  */
 static void
-sha_init(struct sha_hash_s *hash)
+init(struct sha_hash_s *hash)
 {
     reset_block(hash->msg_block, BLK_SIZE);
     hash->msg_idx = 0;
@@ -457,21 +468,21 @@ sha_init(struct sha_hash_s *hash)
     hash->hi_length = 0;
     hash->lo_length = 0;
 
-    /* intialize msg digest array to the values specified in
+    /* intialize h_sub_i array to the values specified in
      * sha-1 specification */
-    hash->msg_digest[0] = 0x67452301;
-    hash->msg_digest[1] = 0xEFCDAB89;
-    hash->msg_digest[2] = 0x98BADCFE;
-    hash->msg_digest[3] = 0x10325476;
-    hash->msg_digest[4] = 0xC3D2E1F0;
+    hash->h_sub[0] = 0x67452301;
+    hash->h_sub[1] = 0xEFCDAB89;
+    hash->h_sub[2] = 0x98BADCFE;
+    hash->h_sub[3] = 0x10325476;
+    hash->h_sub[4] = 0xC3D2E1F0;
 
-}		/* -----  end of static function sha_init  ----- */
+}		/* -----  end of static function init  ----- */
 
 
 
 /* 
  * ===  FUNCTION  ===============================================
- *         Name:  sha_process_file
+ *         Name:  process_file
  *  Description:  Processes the input and populates the
  *                corresponding members of the sha_hash_s struct.
  *                The input is specified by the FILE pointer, fd,
@@ -482,11 +493,11 @@ sha_init(struct sha_hash_s *hash)
  *                the file size (in bits).  Once a msg block is
  *                full, the function passes the block (or more
  *                specifically, a pointer to the struct) off to
- *                the sha_compute function.
+ *                the compute_hash function.
  * ==============================================================
  */
 static void
-sha_process_file(struct sha_hash_s *hash, FILE *fd)
+process_file(struct sha_hash_s *hash, FILE *fd)
 {
 
     int ch = 0;
@@ -502,7 +513,7 @@ sha_process_file(struct sha_hash_s *hash, FILE *fd)
 
         /* msg block if full, so pass off the current block and start new one */
         } else { 
-            sha_compute(hash);
+            compute_hash(hash);
 
             /* reset the block */
             reset_block(hash->msg_block, BLK_SIZE);
@@ -526,25 +537,33 @@ sha_process_file(struct sha_hash_s *hash, FILE *fd)
 
     /* need to handle the end case when EOF is encountered at a
      * multiple of 512 bits (or 64 bytes).  without this,
-     * sha_compute would never be called. */
+     * compute_hash would never be called. */
     if (hash->msg_idx == 64)
-        sha_compute(hash);
+        compute_hash(hash);
 
     /* always pad the msg */
-    sha_pad(hash);
+    pad(hash);
 
-}		/* -----  end of static function sha_process_file  ----- */
+}		/* -----  end of static function rocess_file  ----- */
 
 
 
 /* 
  * ===  FUNCTION  ===============================================
- *         Name:  sha_process_str
- *  Description:  
+ *         Name:  process_str
+ *  Description:  Processes the input and populates the
+ *                corresponding members of the sha_hash_s struct.
+ *                The input is specified by the string, str.
+ *
+ *                It populates the msg block and keeps track of
+ *                the string size (in bits).  Once a msg block is
+ *                full, the function passes the block (or more
+ *                specifically, a pointer to the struct) off to
+ *                the compute_hash function.
  * ==============================================================
  */
 static void
-sha_process_str(struct sha_hash_s *hash, char *str)
+process_str(struct sha_hash_s *hash, char *str)
 {
     while (*str) {
 
@@ -555,7 +574,7 @@ sha_process_str(struct sha_hash_s *hash, char *str)
 
         /* msg block if full, so pass off the current block and start new one */
         } else { 
-            sha_compute(hash);
+            compute_hash(hash);
 
             /* reset the block */
             reset_block(hash->msg_block, BLK_SIZE);
@@ -581,20 +600,20 @@ sha_process_str(struct sha_hash_s *hash, char *str)
 
     /* need to handle the end case when EOF is encountered at a
      * multiple of 512 bits (or 64 bytes).  without this,
-     * sha_compute would never be called. */
+     * compute_hash would never be called. */
     if (hash->msg_idx == 64)
-        sha_compute(hash);
+        compute_hash(hash);
 
     /* always pad the msg */
-    sha_pad(hash);
+    pad(hash);
 
-}		/* -----  end of static function sha_process_str  ----- */
+}		/* -----  end of static function process_str  ----- */
 
 
 
 /* 
  * ===  FUNCTION  ===============================================
- *         Name:  sha_compute
+ *         Name:  compute_hash
  *  Description:  This is the heavy lifting function of the sha-1
  *                algorithm. Conducts 80 rounds of computations
  *                and updates the msg digest arrary each time.
@@ -607,7 +626,7 @@ sha_process_str(struct sha_hash_s *hash, char *str)
  * ==============================================================
  */
 static void
-sha_compute(struct sha_hash_s *hash)
+compute_hash(struct sha_hash_s *hash)
 {
 
 #ifdef DEBUG
@@ -624,13 +643,13 @@ sha_compute(struct sha_hash_s *hash)
     /* function pointer to point to the appropriate function to calculate
      * temp.  The function which it will point to is dependent on the
      * loop idx, t. */
-    uint32 (*func)(uint32 x, uint32 y, uint32 z);
+    uint32 (*logical_func)(uint32 x, uint32 y, uint32 z);
 
-    a = hash->msg_digest[0];
-    b = hash->msg_digest[1];
-    c = hash->msg_digest[2];
-    d = hash->msg_digest[3];
-    e = hash->msg_digest[4];
+    a = hash->h_sub[0];
+    b = hash->h_sub[1];
+    c = hash->h_sub[2];
+    d = hash->h_sub[3];
+    e = hash->h_sub[4];
 
     /* loop to initialize the w[80] array.  w[0] thru w[15]
      * is initialized to the contents of the msg_block.
@@ -654,20 +673,20 @@ sha_compute(struct sha_hash_s *hash)
     for (t = 0; t < 80; t++) {
 
         if (t < 20) { 
-            func = ch;
+            logical_func = ch;
             constant = k[0];
         } else if (t > 19 && t < 40) {
-            func = parity;
+            logical_func = parity;
             constant = k[1];
         } else if (t > 39 && t < 60) {
-            func = maj;
+            logical_func = maj;
             constant = k[2];
         } else {
-            func = parity;
+            logical_func = parity;
             constant = k[3];
         }
 
-        temp = rotl(a, 5) + func(b, c, d) + e + w[t] + constant;
+        temp = rotl(a, 5) + logical_func(b, c, d) + e + w[t] + constant;
 
         e = d;
         d = c;
@@ -695,71 +714,46 @@ sha_compute(struct sha_hash_s *hash)
 
     }
 
-    hash->msg_digest[0] += a;
-    hash->msg_digest[1] += b;
-    hash->msg_digest[2] += c;
-    hash->msg_digest[3] += d;
-    hash->msg_digest[4] += e;
+    hash->h_sub[0] += a;
+    hash->h_sub[1] += b;
+    hash->h_sub[2] += c;
+    hash->h_sub[3] += d;
+    hash->h_sub[4] += e;
 
 #ifdef DEBUG
     int i;
     for(i = 0; i < 5; i++) {
-        hexdump_word(hash->msg_digest[i], hex_word);
+        hexdump_word(hash->h_sub[i], hex_word);
         printf("H[%d] = %s\n", i,  hex_word);
     }
 #endif
 
-}		/* -----  end of static function sha_compute  ----- */
-
-
-
-/* 
- * ===  FUNCTION  ===============================================
- *         Name:  sha_output
- *  Description:  Prints the final msg digest and filename or
- *                string name.  The output is identical to the
- *                output of sha1sum.  This is essentially a
- *                wrapper for 'sha_get_digest( )', which only
- *                returns the digest of the file or str.  This
- *                function appends the name of the file to the
- *                end to match the output of sha1sum.
- *
- *                Currently the output is printed to stdout, but
- *                will soon add the ability to print to an output
- *                file.  If that is desired, just need to
- *                redirect the output to a file.
- * ==============================================================
- */
-static void
-sha_output(struct sha_hash_s *hash, char *name)
-{
-    char *digest = sha_get_digest(hash);
-
-    printf("%s  %s\n", digest, name);
-    
-    free(digest);
-}		/* -----  end of static function sha_output  ----- */
+}		/* -----  end of static function compute_hash  ----- */
 
 
 /* 
  * ===  FUNCTION  ===============================================
- *         Name:  sha_get_digest
- *  Description:  Returns a pointer to the generated sha1 message
+ *         Name:  get_digest
+ *  Description:  Populates the global var, sha1hash, with the
+ *                value of the 40 char (160 bit) sha1 hash.
+ *                Iterates over each of the H[i] and
+ *                concatenates the content of each H[i] into
+ *                the sha1hash global variable.  Returns
+ *                a pointer to the generated sha1 message
  *                digest.
  * ==============================================================
  */
 static char *
-sha_get_digest(struct sha_hash_s *hash)
+get_digest(struct sha_hash_s *hash)
 {
-    char *hash_str = malloc((unsigned) (40));
 
     int i;
     for(i = 0; i < 5; i++) {
-        hexdump_word(hash->msg_digest[i], (hash_str + (i*8)));
+        hexdump_word(hash->h_sub[i], (sha1hash + (i*8)));
     }
 
-    return hash_str;
-}		/* -----  end of static function sha_get_digest  ----- */
+    return sha1hash;
+}		/* -----  end of static function get_digest  ----- */
 
 /***************** END UTILITY FUNCTIONS *********************/
 
@@ -768,27 +762,34 @@ sha_get_digest(struct sha_hash_s *hash)
 /* 
  * ===  FUNCTION  ===============================================
  *         Name:  sha_hash_file
- *  Description:  Main entry function to generate a msg digest
- *                for an input file, given by filename.
+ *  Description:  API function to generate a msg digest for an
+ *                input file, given by filename.  This could be
+ *                utilized from within another program to obtain
+ *                the sha1 hash for some file, which could then
+ *                be used as needed.
  *
  *                If filename is not NULL, the function will open
  *                the filename for reading then pass it off to
- *                sha_process_file.  If the filename is NULL,
+ *                process_file.  If the filename is NULL,
  *                then it will read input from stdin.
  *
  *                Once the input is processed and the msg digest
- *                is output, the file is closed.
+ *                is output, the file is closed.  It does not
+ *                display any output to stdout.
+ *
+ *                Returns a pointer the generated sha1 hash for
+ *                filename.
  * ==============================================================
  */
-void
+char *
 sha_hash_file(char *filename)
 {
     FILE  *input_file;
 
     struct sha_hash_s hash;
-    sha_init(&hash);
+    init(&hash);
 
-    /*  if filename is not NULL, so open for reading and
+    /*  if filename is not NULL, open for reading and
      *  subsequent processing */
     if (filename) {
 
@@ -805,15 +806,15 @@ sha_hash_file(char *filename)
         input_file = stdin;
     }
 
-    sha_process_file(&hash, input_file);
-
-    sha_output(&hash, filename);
+    process_file(&hash, input_file);
 
     /* close input file   */
     if (fclose(input_file) == EOF) {		
         fprintf(stderr, "couldn't close file '%s'\n", filename);
         exit(EXIT_FAILURE);
     }
+
+    return get_digest(&hash);
 
 }		/* -----  end of function sha_hash_file  ----- */
 
@@ -822,17 +823,48 @@ sha_hash_file(char *filename)
 /* 
  * ===  FUNCTION  ===============================================
  *         Name:  sha_hash_str
- *  Description:  Main entry function to generate a msg digest
- *                for a string, given by str.
+ *  Description:  API function to generate a msg digest for a
+ *                string, given by str.  This is most useful to
+ *                utilize within another program to generate a
+ *                sha1 hash for a given string, like a password,
+ *                for example, rather than an entire file.  If
+ *                you need a sha1 hash of a file, see
+ *                sha_hash_file( ).
+ *
+ *                Returns a pointer the generated sha1 hash for
+ *                str.
  * ==============================================================
  */
 char *
 sha_hash_str(char *str)
 {
     struct sha_hash_s hash;
-    sha_init(&hash);
+    init(&hash);
 
-    sha_process_str(&hash, str);
+    process_str(&hash, str);
 
-    return sha_get_digest(&hash);
+    return get_digest(&hash);
 }		/* -----  end of function sha_hash_str  ----- */
+
+/* 
+ * ===  FUNCTION  ===============================================
+ *         Name:  sha_hash_file_output
+ *  Description:  Default API call when invoking as a standalone
+ *                program, for example, when called from the
+ *                command line.  This is actually a simple
+ *                wrapper for sha_hash_file( ); used to add a
+ *                few other things to mimic the output of
+ *                sha1sum, which is installed by default on most
+ *                linux distributions.
+ * ==============================================================
+ */
+void
+sha_hash_file_output(char *filename)
+{
+    if (filename == NULL) {
+        printf("%s  -\n", sha_hash_file(filename));
+
+    } else {
+        printf("%s  %s\n", sha_hash_file(filename), filename);
+    }
+}		/* -----  end of function sha_hash_file_output  ----- */
