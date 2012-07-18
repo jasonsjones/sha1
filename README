@@ -3,19 +3,22 @@
  README for sha1--an implementation of the secure hash
                   algorithm (SHA1).
 
- +----------------------------------------------------------------+
- |   *** This program only runs on a linux system ***             |
- +----------------------------------------------------------------+
 
- Last Updated: October 2011
+ Last Updated: July 2012
 
  AUTHOR  Jason S. Jones <jsjones96@gmail.com>
 
-       This project started as an academic exercise.  Basically, I
-       wanted to find an intermediate (practical) programming
-       challenge in order to explore the more advanced aspects of c.
+       This project started as an academic exercise.  It gained a 
+       little more traction after I passed the CISSP exam in Dec 
+       2011.  Basically, my intent was to understand, on a much deeper
+       level,  a few aspects of cryptography that I explored while studying
+       for the CISSP exam.
+       
+       Also, I wanted to find an intermediate (practical) programming
+       challenge in order to understand some of the more advanced aspects
+       of c.
 
-       Reference Federal Information Processing Standard 
+       Reference the Federal Information Processing Standard 
        Publications (FIPS PUBS) 180-1 and FIPS PUB 180-2 for
        specification of the sha-1 hash function. FIPS PUBS
        are issued by the National Institute of Standards and
@@ -45,8 +48,8 @@
 
    :$ make 
 
-   - Without modification to the makefile, this will produce an
-     executable named 'sha1'.
+   - Without any modification to the included makefile, this will
+     produce an executable named 'sha1'.
 
  To build the executable with verbose output enabled, run:
 
