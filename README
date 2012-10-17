@@ -1,84 +1,80 @@
 **********************************************************************
 
- README for sha1--an implementation of the secure hash
-                  algorithm (SHA1).
+ README for sha1 -- an implementation of the secure hash
+                    algorithm (SHA1).
 
 
  Last Updated: July 2012
 
- AUTHOR  Jason S. Jones <jsjones96@gmail.com>
+ AUTHOR:  Jason S. Jones < jsjones96(at)gmail.com >
 
-       This project started as an academic exercise.  It gained a 
-       little more traction after I passed the CISSP exam in Dec 
-       2011.  Basically, my intent was to understand, on a much deeper
-       level,  a few aspects of cryptography that I explored while studying
-       for the CISSP exam.
+
+      This project started as an academic exercise.  It gained a
+      little more traction after I passed the CISSP exam in Dec
+      2011.  Basically, my intent was to understand, on a much
+      deeper level, a few aspects of cryptography that I
+      explored while studying for the CISSP exam.
        
-       Also, I wanted to find an intermediate (practical) programming
-       challenge in order to understand some of the more advanced aspects
-       of c.
+      Also, I wanted to find an intermediate (practical)
+      programming challenge in order to understand some of the
+      more advanced aspects of c.
 
-       Reference the Federal Information Processing Standard 
-       Publications (FIPS PUBS) 180-1 and FIPS PUB 180-2 for
-       specification of the sha-1 hash function. FIPS PUBS
-       are issued by the National Institute of Standards and
-       Technology (NIST).
+      Reference the Federal Information Processing Standard
+      Publications (FIPS PUBS) 180-1 and FIPS PUB 180-2 for
+      specification of the sha-1 hash function. FIPS PUBS are
+      issued by the National Institute of Standards and
+      Technology (NIST).
+
 
   http://www.itl.nist.gov/fipspubs/fip180-1.htm
   http://csrc.nist.gov/publications/fips/fips180-2/fips180-2.pdf
  
-**********************************************************************
- FILE DESCRIPTIONS:
-
- README        - this file!
- makefile      - Makefile to build project
- LICENSE       - General Public License v3 (GPLv3)
 
 **********************************************************************
- DIR STRUCTURE:
-
-
- TODO:  describe the purpose for each directory
-
 **********************************************************************
 
  BUILD: 
 
- To build the basic executable (without verbose output enabled), run:
+ To build the basic executable (without verbose output enabled),
+ run:
 
-   :$ make 
+   $ make 
 
-   - Without any modification to the included makefile, this will
-     produce an executable named 'sha1'.
+   - NOTE: Without any modification to the included makefile,
+     this will produce an executable named 'sha1'.
+
 
  To build the executable with verbose output enabled, run:
 
-   :$ make verbose
+   $ make verbose
 
-   - Without modification to the makefile, this will produce an
-     executable named 'sha1-gdb'.  This will also define the
-     DEBUG preprocessor directive.
+   - NOTE: Without modification to the makefile, this will
+     produce an executable named 'sha1-gdb'.  This will also
+     define the DEBUG preprocessor directive.
 
    - Running this program will produce a verbose ouput which
      prints the components of the hash algorithm for each round.
-     This is good to see how things are working and to verify
-     the output against the examples listed in the appendix
-     of the specification.  Included in the 'tests' directory
-     are two files, sha_spec_example{1,2}.txt.  These files
-     represent the two of the three example cases located in
-     the specification for the sha-1 algorithm.
+     This is good to see how things are working and to verify the
+     output against the examples listed in the appendix of the
+     specification.  Included in the 'tests' directory are two
+     files, sha_spec_example{1,2}.txt.  These files represent the
+     two of the three example cases located in the specification
+     for the sha-1 algorithm.
 
- To build and run the test suite located in the 'tests' directory,
- run:
 
-   :$ make
-   :$ make run-test
+ To build and run the test suite located in the 'tests'
+ directory, run:
 
-   - 'make run-test' will execute the script in the tests directory
-     which will loop over all the .txt files locaed in the directory
-     and run the actual 'sha1sum' program and then run 'sha1'.
-     The message digests will be side-by-side (so to speak), so you
-     will be able to visually inspect the digest for correctness.
+   $ make
+   $ make run-test
+
+   - 'make run-test' will execute the script in the tests
+     directory which will loop over all the .txt files locaed in
+     the directory and run the actual 'sha1sum' program and then
+     run 'sha1'.  The message digests will be side-by-side (so to
+     speak), so you will be able to visually inspect the digest
+     for correctness.
+
 
 **********************************************************************
 
@@ -86,15 +82,16 @@
 
  To install the executable in $(HOME)/bin, run:
 
-   :$ make install
+   $ make install
 
    - If you don't have a $(HOME)/bin directory or do not want to
-     install it, it can safely be run from the project
-     directory where it was built.
+     install it, it can safely be run from the project directory
+     where it was built.
+
 
  To uninstall the executable, run:
 
-   :$ make uninstall
+   $ make uninstall
 
 **********************************************************************
 
@@ -102,22 +99,23 @@
 
  To obtain a sha1 message digest for a particular file, run:
 
-   :$ sha1 <filename>
+   $ sha1 <filename>
+
 
  To obtain a sha1 message digest for several files, run:
 
-   :$ sha1 <filename1> <filename2> <filename3>
+   $ sha1 <filename1> <filename2> <filename3>
 
-   - For now, the output is sent to stdout.  Maybe a future update
-     will include the option to send the msg digest to another
-     output file.
+   - For now, the output is sent to stdout.  Maybe a future
+     update will include the option to send the msg digest to
+     another output file.
 
 **********************************************************************
 
  COPYING/LICENSE:
 
-  This progam is licensed under the Gnu General Public License v3
-  (GPLv3).  See the file 'LICENSE' included with the source code for
-  more details.
+ This progam is licensed under the Gnu General Public License v3
+ (GPLv3).  See the file 'LICENSE' included with the source code
+ for more details.
 
 **********************************************************************
