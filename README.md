@@ -32,7 +32,7 @@ To build the executable with verbose output enabled, run:
 $ make verbose
 ```
 
-_NOTE: Without modification to the makefile, this will produce an executable named `sha1-gdb`.  
+_NOTE: Without modification to the makefile, this will produce an executable named `sha1-gdb`.
 This will also define the DEBUG preprocessor directive._
 
 Running this program will produce a verbose output which prints the components of the hash
