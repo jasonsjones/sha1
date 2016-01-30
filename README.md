@@ -1,5 +1,6 @@
- # SHA1
- #### C implementation of the [secure hash algorithm (SHA1)][wiki].
+# SHA1
+
+#### C implementation of the [secure hash algorithm (SHA1)][wiki].
 
 #### Motivation
 
